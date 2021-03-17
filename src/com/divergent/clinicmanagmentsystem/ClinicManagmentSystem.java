@@ -16,6 +16,13 @@ public class ClinicManagmentSystem {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		startAgain();
+	}
+
+	/**
+	 * Admin Start Method
+	 */
+	public static void startAgain() {
 		Admin admin = new Admin();
 		Doctor doctor = new Doctor();
 		Scanner sc = new Scanner(System.in);
@@ -54,7 +61,7 @@ public class ClinicManagmentSystem {
 						if (sc.nextLine().equals("5")) {
 							break Login;
 						} else {
-							System.out.println("Select Right Option");
+		System.out.println("Select Right Option");
 						}
 					}
 

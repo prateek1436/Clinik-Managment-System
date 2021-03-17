@@ -62,39 +62,46 @@ public class Admin {
 	}
 
 	public void printAdminOptions() {
-		back: while (true) {
-			System.out.println("\n----Admin Panel-----");
-			System.out.println("1.	Patient");
-			System.out.println("2. 	Doctor");
-			System.out.println("3. 	Drug");
-			System.out.println("4.	Lab Test");
-			System.out.println("5. 	Book appointment for a patient by selecting Patient, Doctor and Data/time");
-			System.out.println("6. 	Logout");
-			System.out.print("Enter Your Choice: ");
+		 while (true) {
+			executedMethod();
+		}
+	}
 
-			int input = sc.nextInt();
+	private void executedMethod() {
+		System.out.println("\n----Admin Panel-----");
+		System.out.println("1.	Patient");
+		System.out.println("2. 	Doctor");
+		System.out.println("3. 	Drug");
+		System.out.println("4.	Lab Test");
+		System.out.println("5. 	Book appointment for a patient by selecting Patient, Doctor and Data/time");
+		System.out.println("6. 	Logout");
+		System.out.print("Enter Your Choice: ");
 
-			switch (input) {
-			case 1:
-				patient.patientPanel();
-				break;
-			case 2:
-				doctor.docterPanel();
-				break;
-			case 3:
-				drug.drugPanel();
-				break;
-			case 4:
-				labtest.labTestPanel();
-				break;
-			case 5:
-				appoin.appoinmentPanel();
-				break;
-			case 6:
-				break back;
-			default:
-				break;
-			}
+		int input = sc.nextInt();
+
+		switch (input) {
+		case 1:
+			patient.patientPanel();
+			break;
+		case 2:
+			doctor.docterPanel();
+			break;
+		case 3:
+			drug.drugPanel();
+			break;
+		case 4:
+			labtest.labTestPanel();
+			break;
+		case 5:
+			appoin.appoinmentPanel();
+			break;
+		case 6:
+			System.out.println("Logout Successfully");
+			ClinicManagmentSystem.startAgain();
+			break;
+		default:
+			System.out.println("Back");
+			break;
 		}
 	}
 

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,6 +17,8 @@ import java.util.Scanner;
  *
  */
 public class Appoinment {
+
+	static Doctor doctor = new Doctor();
 
 	/**
 	 * Get Patient Information
@@ -69,7 +71,7 @@ public class Appoinment {
 			stmt.setString(5, map.get("5"));
 			long millis = System.currentTimeMillis();
 			Date date = new Date(millis);
-			stmt.setDate(6, (java.sql.Date) date);
+			stmt.setDate(6, date);
 			stmt.setString(7, map.get("6"));
 			stmt.setString(8, map.get("7"));
 			System.out.println("Insert successfully!!!!!!");
@@ -90,9 +92,12 @@ public class Appoinment {
 			Statement st = con.createStatement();
 			String sql = "select * from appoinment";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Appointmenr Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record Is Found!\n");
+				doctor.printDoctorOptions();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Appointmenr Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				int appoin_id = rs.getInt(1);
 				String p_name = rs.getString(2);
 				String d_name = rs.getString(3);
@@ -103,13 +108,16 @@ public class Appoinment {
 				String p_id = rs.getString(8);
 				System.out.printf("%6s  %15s  %15s  %20s  %12s  %12s  %5s  %5s\n", appoin_id, p_name, d_name, problem,
 						appinDate, currentDate, d_id, p_id);
+
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 		}
 	}

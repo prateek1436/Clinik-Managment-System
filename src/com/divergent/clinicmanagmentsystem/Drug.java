@@ -23,11 +23,11 @@ public class Drug {
 	 * Show All Option
 	 */
 	public static void showCRUDDrug() {
-		System.out.println("1. Insert Doctor Data");
-		System.out.println("2. Update Doctor Data");
-		System.out.println("3. Search Doctor Data");
-		System.out.println("4. Delete Doctor Data");
-		System.out.println("5. List All Doctor");
+		System.out.println("1. Insert Drug Data");
+		System.out.println("2. Update Drug Data");
+		System.out.println("3. Search Drug Data");
+		System.out.println("4. Delete Drug Data");
+		System.out.println("5. List All Drug");
 		System.out.println("6. Back");
 	}
 
@@ -98,6 +98,7 @@ public class Drug {
 			stmt.setString(1, map.get("1"));
 			stmt.setString(2, map.get("2"));
 			stmt.setString(3, map.get("3"));
+			int i = stmt.executeUpdate();
 			System.out.println("Insert successfully!!!!!!");
 			con.close();
 		} catch (Exception e) {
@@ -118,22 +119,24 @@ public class Drug {
 			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
 					ClinicDatabase.password);
 			Statement st = con.createStatement();
-			System.out.println("Enter Doctor Id : ");
+			System.out.println("Enter Drug Id : ");
 			String id = sc.nextLine();
-			String sql = "select * from doctor where d_id like '" + id + "%';";
+			String sql = "select * from drug where d_id like '" + id + "%';";
 			ResultSet rs = st.executeQuery(sql);
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record is Found!\n");
+				drugPanel();
+			} else {
 				System.out.println(
 						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Drug Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n");
-				while (rs.next()) {
-					String did = rs.getString(1);
-					String dname = rs.getString(2);
-					String rate = rs.getString(3);
-					System.out.printf("%5s  %20s  %25s  \n", did, dname, rate);
-				}
+				String did = rs.getString(1);
+				String dname = rs.getString(2);
+				String rate = rs.getString(3);
+				System.out.printf("%5s  %20s  %25s  \n", did, dname, rate);
 				System.out.println(
 						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
+			drugPanel();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -150,7 +153,7 @@ public class Drug {
 			Statement st = con.createStatement();
 			System.out.println("Enter Drug Id");
 			String did = sc.nextLine();
-			int result = st.executeUpdate("delete from durg where d_id='" + did + "';");
+			int result = st.executeUpdate("delete from drug where d_id='" + did + "';");
 			System.out.println("Delete SuccessFully....");
 			con.close();
 		} catch (Exception e) {
@@ -169,16 +172,21 @@ public class Drug {
 			Statement st = con.createStatement();
 			String sql = "select * from drug";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Drug Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+
+			if (!rs.next()) {
+				System.out.println("No record Is Found!\n");
+				drugPanel();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Drug Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String did = rs.getString(1);
 				String dname = rs.getString(2);
 				String rate = rs.getString(3);
 				System.out.printf("%5s  %20s  %25s  \n", did, dname, rate);
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			drugPanel();
 			st.close();
 			con.close();
 		} catch (Exception e) {

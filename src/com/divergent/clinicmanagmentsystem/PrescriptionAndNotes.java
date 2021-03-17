@@ -18,6 +18,8 @@ import java.util.Scanner;
  */
 public class PrescriptionAndNotes {
 
+	static Doctor doctor = new Doctor();
+	
 	/**
 	 * Get Information
 	 * 
@@ -79,31 +81,36 @@ public class PrescriptionAndNotes {
 			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
 					ClinicDatabase.password);
 			Statement st = con.createStatement();
-			String sql = "select patient.p_id,patient.p_name,patient.address,patient.age,patient.gender,appoinment.d_id,"
-					+ "appoinment.d_name,appoinment.appoinment_id,appoinment.problem,appoinment.appoinment_date\r\n"
-					+ "from patient join appoinment on patient.p_id =  appoinment.p_id   \r\n"
+			String sql = "select patient.p_id,patient.p_name,patient.gender,patient.age,appoinment.d_id,appoinment.d_name,\r\n"
+					+ "appoinment.problem,appoinment.appoinment_id,appoinment.appoinment_date,\r\n"
+					+ "prescription.dprescription,prescription.dnotes\r\n"
+					+ "from patient inner join appoinment on patient.p_id =  appoinment.p_id   \r\n"
+					+ "inner join prescription on patient.p_id = prescription.p_id\r\n"
 					+ "order by appoinment.appoinment_date desc;";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println("\n*-*-*-*-*-*-*-*-*-* History Of Patient *-*-*-*-*-*-*-*-*-*-*-*-*");
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No record Found!\n");
+				doctor.printDoctorOptions();
+			} else {
+				System.out.println("\n*-*-*-*-*-*-*-*-*-* History Of Patient *-*-*-*-*-*-*-*-*-*-*-*-*");
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
-				String paddress = rs.getString(3);
+				String pgender = rs.getString(3);
 				String page = rs.getString(4);
-				String pgender = rs.getString(5);
-				String doctorId = rs.getString(6);
-				String doctorname = rs.getString(7);
-				String appoinId = rs.getString(8);
-				String pproblem = rs.getString(9);
-				String appoindate = rs.getString(10);
-
-				System.out.printf("%5s  %20s  %15s  %3s  %7s  %5s  %20s  %5s  %20s  %15s\n", pid, pname, paddress, page,
-						pgender, doctorId, doctorname, appoinId, pproblem, appoindate);
+				String doctorId = rs.getString(5);
+				String doctorname = rs.getString(6);
+				String appoinId = rs.getString(7);
+				String pproblem = rs.getString(8);
+				String appoindate = rs.getString(9);
+				String prescri = rs.getString(10);
+				String note = rs.getString(11);
+				System.out.printf("%5s  %20s  %3s  %7s  %5s  %20s  %5s  %10s  %15s  %30s  %30s\n", pid, pname, pgender,
+						page, doctorId, doctorname, appoinId, pproblem, appoindate, prescri, note);
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 

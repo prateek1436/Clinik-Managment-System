@@ -24,7 +24,7 @@ public class Doctor {
 	 * Get Doctor Data
 	 */
 	public void printDoctorOptions() {
-		back: while (true) {
+		while (true) {
 			System.out.println("\nDoctor Panel");
 			System.out.println("1. List of patient");
 			System.out.println("2. Add prescription and notes for a patient");
@@ -52,8 +52,11 @@ public class Doctor {
 			case 5:
 				patient.generateInvoice();
 			case 6:
-				break back;
+				System.out.println("Logout Successfully");
+				ClinicManagmentSystem.startAgain();
+				break;
 			default:
+				System.out.println("Choice Right Option");
 				break;
 			}
 		}

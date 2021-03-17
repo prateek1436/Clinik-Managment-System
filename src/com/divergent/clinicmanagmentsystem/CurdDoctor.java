@@ -105,6 +105,7 @@ public class CurdDoctor {
 			stmt.setString(4, map.get("4"));
 			stmt.setString(5, map.get("5"));
 			stmt.setString(6, map.get("6"));
+			int i = stmt.executeUpdate();
 			System.out.println("Insert successfully!!!!!!");
 			con.close();
 		} catch (Exception e) {
@@ -127,7 +128,7 @@ public class CurdDoctor {
 		Map<String, String> map = searchDoctorId(did);
 
 		if (map.size() == 0) {
-			System.out.println("\nDoctor not found!");
+			System.out.println("\nDoctor not found!\n");
 		} else {
 
 			System.out.println("\n----Update Doctor Data----");
@@ -230,21 +231,22 @@ public class CurdDoctor {
 			String id = sc.nextLine();
 			String sql = "select * from doctor where d_id like '" + id + "%';";
 			ResultSet rs = st.executeQuery(sql);
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No record Found!\n");
+				docterPanel();
+			} else {
 				System.out.println(
 						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Docter Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-				while (rs.next()) {
-					String did = rs.getString(1);
-					String dname = rs.getString(2);
-					String specia = rs.getString(3);
-					String dcontact = rs.getString(4);
-					String dfee = rs.getString(5);
-					String ddegree = rs.getString(6);
-					System.out.printf("%5s  %20s  %25s  %18s  %15s  %15s\n", did, dname, specia, dcontact, dfee,
-							ddegree);
-				}
+				String did = rs.getString(1);
+				String dname = rs.getString(2);
+				String specia = rs.getString(3);
+				String dcontact = rs.getString(4);
+				String dfee = rs.getString(5);
+				String ddegree = rs.getString(6);
+				System.out.printf("%5s  %20s  %25s  %18s  %15s  %15s\n", did, dname, specia, dcontact, dfee, ddegree);
 				System.out.println(
 						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+				docterPanel();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,9 +283,12 @@ public class CurdDoctor {
 			Statement st = con.createStatement();
 			String sql = "select * from doctor";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Docter Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record Found!\n");
+				docterPanel();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Docter Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String did = rs.getString(1);
 				String dname = rs.getString(2);
 				String specia = rs.getString(3);

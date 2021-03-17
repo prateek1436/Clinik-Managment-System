@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -19,6 +19,9 @@ import java.sql.*;
  */
 public class LabTest {
 
+	/**
+	 * Show All Operation on Console
+	 */
 	public static void showCRUDDrug() {
 		System.out.println("1. Insert Lab Test Data");
 		System.out.println("2. Update Lab Test Data");
@@ -28,6 +31,9 @@ public class LabTest {
 		System.out.println("6. Back");
 	}
 
+	/**
+	 * Lab Test Panel
+	 */
 	public void labTestPanel() {
 		Scanner sc = new Scanner(System.in);
 		back: while (true) {
@@ -98,11 +104,11 @@ public class LabTest {
 			stmt.setString(1, map.get("1"));
 			stmt.setString(2, map.get("2"));
 			stmt.setString(3, map.get("3"));
-			stmt.setString(4, map.get("4"));
 			long millis = System.currentTimeMillis();
 			Date date = new Date(millis);
-			stmt.setDate(5, (java.sql.Date) date);
-			stmt.setString(6, "5");
+			stmt.setDate(4, date);
+			stmt.setString(5, map.get("4"));
+			int i = stmt.executeUpdate();
 			System.out.println("Insert successfully!!!!!!");
 			con.close();
 		} catch (Exception e) {
@@ -131,16 +137,20 @@ public class LabTest {
 			String id = sc.nextLine();
 			String sql = "select * from lab_test where plab_id like '" + id + "';";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record Is Found!\n");
+				labTestPanel();
+			} else {
+				System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String ltid = rs.getString(1);
 				String pid = rs.getString(2);
 				String testname = rs.getString(3);
 				Date date = rs.getDate(4);
-				int rate = rs.getInt(2);
+				int rate = rs.getInt(5);
 				System.out.printf("%5s  %5s  %25s  %12s  %10s\n", ltid, pid, testname, date, rate);
+				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			labTestPanel();
 			st.close();
 			con.close();
 		} catch (Exception e) {
@@ -179,16 +189,20 @@ public class LabTest {
 			Statement st = con.createStatement();
 			String sql = "select * from lab_test";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record Is Found!\n");
+				labTestPanel();
+			} else {
+				System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String ltid = rs.getString(1);
 				String pid = rs.getString(2);
 				String testname = rs.getString(3);
 				Date date = rs.getDate(4);
-				int rate = rs.getInt(2);
+				int rate = rs.getInt(5);
 				System.out.printf("%5s  %5s  %25s  %12s  %10s\n", ltid, pid, testname, date, rate);
+				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			labTestPanel();
 			st.close();
 			con.close();
 		} catch (Exception e) {

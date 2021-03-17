@@ -15,6 +15,7 @@ public class Patient {
 
 	static Scanner sc = new Scanner(System.in);
 	static Connection con;
+	static Doctor doctor = new Doctor();
 
 	/**
 	 * Show All OPtion Of Admin to CRUD Operation
@@ -153,9 +154,12 @@ public class Patient {
 			String id = sc.nextLine();
 			String sql = "select * from patient where p_id like '" + id + "%';";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+			if (!rs.next()) {
+				System.out.println("No Record is Found!\n");
+				patientPanel();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
 				String paddress = rs.getString(3);
@@ -168,9 +172,9 @@ public class Patient {
 				String pproblem = rs.getString(10);
 				System.out.printf("%5s  %15s  %15s  %3s  %4s  %6s  %12s  %12s  %12s  %20s\n", pid, pname, paddress,
 						page, pweight, pgender, pcontactno, pcurrentdate, pappoinment, pproblem);
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			System.out.println("Search SuccessFully....");
 			con.close();
 		} catch (Exception e) {
@@ -207,9 +211,13 @@ public class Patient {
 			Statement st = con.createStatement();
 			String sql = "select * from patient";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+
+			if (!rs.next()) {
+				System.out.println("No Record is Found!\n");
+				patientPanel();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
 				String paddress = rs.getString(3);
@@ -222,9 +230,9 @@ public class Patient {
 				String pproblem = rs.getString(10);
 				System.out.printf("%5s  %15s  %15s  %3s  %4s  %6s  %12s  %12s  %12s  %20s\n", pid, pname, paddress,
 						page, pweight, pgender, pcontactno, pcurrentdate, pappoinment, pproblem);
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 
@@ -245,11 +253,16 @@ public class Patient {
 			System.out.println("\nEnter Patient Id");
 			String id = sc.nextLine();
 			String sql = "select appoinment.P_ID,appoinment.P_Name,appoinment.ACurrent_Date,appoinment.Problem,doctor.D_Name,doctor.fee\r\n"
-					+ "from appoinment join doctor on appoinment.d_id = doctor.D_Id where appoinment.p_id ='"+id+"';";
+					+ "from appoinment join doctor on appoinment.d_id = doctor.D_Id where appoinment.p_id ='" + id
+					+ "';";
 			ResultSet rs = st.executeQuery(sql);
-			System.out.println(
-					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Invoice*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-			while (rs.next()) {
+
+			if (!rs.next()) {
+				System.out.println("Record Is not Found!\n");
+				doctor.printDoctorOptions();
+			} else {
+				System.out.println(
+						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Invoice*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
 				Date pcurrentdate = rs.getDate(3);
@@ -259,9 +272,10 @@ public class Patient {
 				System.out.printf("%30s  %30s\n", "Patient Id :" + pid, "Date : " + pcurrentdate);
 				System.out.printf("%30s %30s\n", "Patient Name :" + pname, "Problem :" + pproblem);
 				System.out.printf("%30s %30s\n\n", "Docter Name :" + dname, "Fee :" + fee);
+				System.out.println(
+						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			System.out.println(
-					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			doctor.printDoctorOptions();
 			st.close();
 			con.close();
 		} catch (Exception e) {
