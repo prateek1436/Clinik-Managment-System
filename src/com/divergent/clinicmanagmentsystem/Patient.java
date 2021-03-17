@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 /**
  * All Patient CRUD Operation Is done
+ * 
  * @author Divergent
  *
  */
@@ -61,6 +62,7 @@ public class Patient {
 
 	/**
 	 * Insert Patient Data into Map
+	 * 
 	 * @return
 	 */
 	public static Map<String, String> inputPatientData() {
@@ -226,6 +228,42 @@ public class Patient {
 			st.close();
 			con.close();
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Generate Invoice Of Patient
+	 */
+	public static void generateInvoice() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
+					ClinicDatabase.password);
+			Statement st = con.createStatement();
+			System.out.println("\nEnter Patient Id");
+			String id = sc.nextLine();
+			String sql = "select appoinment.P_ID,appoinment.P_Name,appoinment.ACurrent_Date,appoinment.Problem,doctor.D_Name,doctor.fee\r\n"
+					+ "from appoinment join doctor on appoinment.d_id = doctor.D_Id where appoinment.p_id ='"+id+"';";
+			ResultSet rs = st.executeQuery(sql);
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Invoice*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
+				String pid = rs.getString(1);
+				String pname = rs.getString(2);
+				Date pcurrentdate = rs.getDate(3);
+				String pproblem = rs.getString(4);
+				String dname = rs.getString(5);
+				String fee = rs.getString(6);
+				System.out.printf("%30s  %30s\n", "Patient Id :" + pid, "Date : " + pcurrentdate);
+				System.out.printf("%30s %30s\n", "Patient Name :" + pname, "Problem :" + pproblem);
+				System.out.printf("%30s %30s\n\n", "Docter Name :" + dname, "Fee :" + fee);
+			}
+			System.out.println(
+					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			st.close();
+			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

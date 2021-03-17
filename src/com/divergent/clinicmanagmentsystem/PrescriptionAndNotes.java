@@ -12,19 +12,21 @@ import java.util.Scanner;
 
 /**
  * Prescription And Notes
+ * 
  * @author Divergent
  *
  */
 public class PrescriptionAndNotes {
-	
+
 	/**
 	 * Get Information
+	 * 
 	 * @return
 	 */
 	public static Map<String, String> inputPrescriptionData() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Prescription Id");
-		String prescriId= sc.nextLine();
+		String prescriId = sc.nextLine();
 		System.out.println("Enter Patient Id");
 		String patientId = sc.nextLine();
 		System.out.println("Enter Prescription");
@@ -33,7 +35,6 @@ public class PrescriptionAndNotes {
 		String note = sc.nextLine();
 		System.out.println("Enter doctor id");
 		String doctorid = sc.nextLine();
-	
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("1", prescriId);
@@ -44,9 +45,8 @@ public class PrescriptionAndNotes {
 		return map;
 	}
 
-
 	/**
-	 * Patient Prescription 
+	 * Patient Prescription
 	 */
 	public void prescriptionPatient() {
 		try {

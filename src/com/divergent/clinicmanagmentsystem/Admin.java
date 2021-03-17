@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * Admin Class For Login and Update into all infromation
+ * 
  * @author Divergent
  *
  */
@@ -22,6 +23,7 @@ public class Admin {
 
 	/**
 	 * Admin Login
+	 * 
 	 * @return
 	 */
 	public boolean adminLogin() {

@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * Doctor Class In Which All CRUD Operaton Done
+ * 
  * @author Divergent
  *
  */
@@ -29,6 +30,7 @@ public class Doctor {
 			System.out.println("2. Add prescription and notes for a patient");
 			System.out.println("3. See booked appointments for him");
 			System.out.println("4. Check patient history and his prescription");
+			System.out.println("5. Generate Invoice");
 			System.out.println("5. Logout");
 			System.out.print("Enter Your Choice: ");
 
@@ -36,7 +38,7 @@ public class Doctor {
 
 			switch (input) {
 			case 1:
-				patient.listAllPatientData();;
+				patient.listAllPatientData();
 				break;
 			case 2:
 				pandn.prescriptionPatient();
@@ -48,6 +50,8 @@ public class Doctor {
 				pandn.historyAndPresciption();
 				break;
 			case 5:
+				patient.generateInvoice();
+			case 6:
 				break back;
 			default:
 				break;
@@ -57,6 +61,7 @@ public class Doctor {
 
 	/**
 	 * Doctor Login Method
+	 * 
 	 * @return
 	 */
 	public boolean doctorLogin() {

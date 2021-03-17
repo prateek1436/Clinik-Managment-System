@@ -61,6 +61,7 @@ public class CurdDoctor {
 
 	/**
 	 * Get Data By Admit for insert data
+	 * 
 	 * @return
 	 */
 	public static Map<String, String> inputDoctorData() {
@@ -151,9 +152,10 @@ public class CurdDoctor {
 			updateDoctor(map);
 		}
 	}
-	
+
 	/**
-	 * In this method Map Paratmeter used and Update doctor 
+	 * In this method Map Paratmeter used and Update doctor
+	 * 
 	 * @param map
 	 */
 	public static void updateDoctor(Map<String, String> map) {
@@ -179,6 +181,7 @@ public class CurdDoctor {
 
 	/**
 	 * Serach Docter Details By Id for Update The Data
+	 * 
 	 * @param did
 	 * @return
 	 */
@@ -214,9 +217,9 @@ public class CurdDoctor {
 
 	}
 
-	/** 
+	/**
 	 * Search Doctor Data admin
- 	 */
+	 */
 	public static void searchDoctorData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");

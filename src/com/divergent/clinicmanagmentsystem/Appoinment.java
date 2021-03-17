@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 /**
  * Appointment All Patient
+ * 
  * @author Divergent
  *
  */
@@ -19,6 +20,7 @@ public class Appoinment {
 
 	/**
 	 * Get Patient Information
+	 * 
 	 * @return
 	 */
 	public static Map<String, String> inputLabTestData() {
@@ -78,7 +80,7 @@ public class Appoinment {
 	}
 
 	/**
-	 * Show All Appointment 
+	 * Show All Appointment
 	 */
 	public static void showAllAppoinment() {
 		try {

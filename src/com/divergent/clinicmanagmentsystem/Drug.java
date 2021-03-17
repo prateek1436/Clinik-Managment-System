@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Drug Class For All CRUD Operation 
+ * Drug Class For All CRUD Operation
+ * 
  * @author Divergent
  *
  */
@@ -31,7 +32,7 @@ public class Drug {
 	}
 
 	/**
-	 * Get all Panel Option 
+	 * Get all Panel Option
 	 */
 	public void drugPanel() {
 		back: while (true) {
@@ -65,6 +66,7 @@ public class Drug {
 
 	/**
 	 * It get Drug Infomation
+	 * 
 	 * @return
 	 */
 	public static Map<String, String> inputDoctorData() {

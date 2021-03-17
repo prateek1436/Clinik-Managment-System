@@ -13,6 +13,7 @@ import java.sql.*;
 
 /**
  * All Opeartion Of CRUD Lab Test
+ * 
  * @author Divergent
  *
  */
@@ -58,6 +59,11 @@ public class LabTest {
 		}
 	}
 
+	/**
+	 * Input Lab Test Data By Admin
+	 * 
+	 * @return
+	 */
 	public static Map<String, String> inputLabTestData() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter LabTest_Id");
@@ -78,6 +84,9 @@ public class LabTest {
 		return map;
 	}
 
+	/**
+	 * Insert Lab Test Data
+	 */
 	public void insertLabTestData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -101,10 +110,16 @@ public class LabTest {
 		}
 	}
 
+	/**
+	 * Update Lab Test Data
+	 */
 	public void updateLabTestDoctor() {
-
+		System.out.println("Not Complete");
 	}
 
+	/**
+	 * Search Lab Test Data By Id
+	 */
 	public void searchLabTestData() {
 		Scanner sc = new Scanner(System.in);
 		try {
@@ -133,6 +148,9 @@ public class LabTest {
 		}
 	}
 
+	/**
+	 * Delete Lab Test Data By Id
+	 */
 	public void deleteLabTestData() {
 		Scanner sc = new Scanner(System.in);
 		try {
@@ -150,6 +168,9 @@ public class LabTest {
 		}
 	}
 
+	/**
+	 * List And Show All Lab Test Data
+	 */
 	public void listAllLabTest() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
