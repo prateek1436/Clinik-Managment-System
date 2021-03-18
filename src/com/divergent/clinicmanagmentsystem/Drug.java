@@ -171,7 +171,6 @@ public class Drug {
 			Statement st = con.createStatement();
 			String sql = "select * from drug";
 			ResultSet rs = st.executeQuery(sql);
-
 			if (!rs.next()) {
 				System.out.println("No record Is Found!\n");
 				drugPanel();
