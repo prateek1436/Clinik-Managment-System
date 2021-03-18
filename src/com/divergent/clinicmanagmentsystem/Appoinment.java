@@ -18,7 +18,12 @@ import java.util.Scanner;
  */
 public class Appoinment {
 
-	static Doctor doctor = new Doctor();
+	/**
+	 * Make Private Custructor
+	 */
+	private Appoinment() {
+
+	}
 
 	/**
 	 * Get Patient Information
@@ -42,7 +47,7 @@ public class Appoinment {
 		System.out.println("Enter Patient Id");
 		String patientid = sc.nextLine();
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("1", appoinid);
 		map.put("2", patientname);
 		map.put("3", doctername);
@@ -50,6 +55,7 @@ public class Appoinment {
 		map.put("5", appoindate);
 		map.put("6", doctorid);
 		map.put("7", patientid);
+		sc.close();
 		return map;
 	}
 
@@ -59,8 +65,8 @@ public class Appoinment {
 	public static void appoinmentPanel() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			String sql = ("insert into appoinment values(?,?,?,?,?,?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			Map<String, String> map = inputLabTestData();
@@ -87,27 +93,27 @@ public class Appoinment {
 	public static void showAllAppoinment() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			String sql = "select * from appoinment";
 			ResultSet rs = st.executeQuery(sql);
 			if (!rs.next()) {
 				System.out.println("No Record Is Found!\n");
-				doctor.printDoctorOptions();
+				Doctor.printDoctorOptions();
 			} else {
 				System.out.println(
 						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Appointmenr Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-				int appoin_id = rs.getInt(1);
-				String p_name = rs.getString(2);
-				String d_name = rs.getString(3);
+				int appoinid = rs.getInt(1);
+				String pname = rs.getString(2);
+				String dname = rs.getString(3);
 				String problem = rs.getString(4);
 				String appinDate = rs.getString(5);
 				Date currentDate = rs.getDate(6);
-				String d_id = rs.getString(7);
-				String p_id = rs.getString(8);
-				System.out.printf("%6s  %15s  %15s  %20s  %12s  %12s  %5s  %5s\n", appoin_id, p_name, d_name, problem,
-						appinDate, currentDate, d_id, p_id);
+				String did = rs.getString(7);
+				String pid = rs.getString(8);
+				System.out.printf("%6s  %15s  %15s  %20s  %12s  %12s  %5s  %5s\n", appoinid, pname, dname, problem,
+						appinDate, currentDate, did, pid);
 
 				System.out.println(
 						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");

@@ -19,6 +19,10 @@ public class Drug {
 
 	static Scanner sc = new Scanner(System.in);
 
+	private Drug() {
+
+	}
+
 	/**
 	 * Show All Option
 	 */
@@ -34,10 +38,9 @@ public class Drug {
 	/**
 	 * Get all Panel Option
 	 */
-	public void drugPanel() {
-		back: while (true) {
+	public static void drugPanel() {
+		while (true) {
 			System.out.println("Enter Your Choice : ");
-
 			showCRUDDrug();
 			String input = sc.nextLine();
 			switch (input) {
@@ -45,7 +48,6 @@ public class Drug {
 				insertDrugData();
 				break;
 			case "2":
-				updateDrugDoctor();
 				break;
 			case "3":
 				searchDrugData();
@@ -57,7 +59,8 @@ public class Drug {
 				listAllDrug();
 				break;
 			case "6":
-				break back;
+				drugPanel();
+				break;
 			default:
 				break;
 			}
@@ -71,27 +74,27 @@ public class Drug {
 	 */
 	public static Map<String, String> inputDoctorData() {
 		System.out.println("Enter Drug_Id");
-		String d_id = sc.nextLine();
+		String did = sc.nextLine();
 		System.out.println("Enter Drug Name");
-		String d_name = sc.nextLine();
+		String dname = sc.nextLine();
 		System.out.println("Enter Drug Rate");
-		String d_rate = sc.nextLine();
+		String drate = sc.nextLine();
 
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("1", d_id);
-		map.put("2", d_name);
-		map.put("3", d_rate);
+		Map<String, String> map = new HashMap<>();
+		map.put("1", did);
+		map.put("2", dname);
+		map.put("3", drate);
 		return map;
 	}
 
 	/**
 	 * Insert all Drug Data
 	 */
-	public void insertDrugData() {
+	public static void insertDrugData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			String sql = ("insert into drug values(?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			Map<String, String> map = inputDoctorData();
@@ -99,25 +102,21 @@ public class Drug {
 			stmt.setString(2, map.get("2"));
 			stmt.setString(3, map.get("3"));
 			int i = stmt.executeUpdate();
-			System.out.println("Insert successfully!!!!!!");
+			System.out.println("Insert successfully!!!!!!" + i);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void updateDrugDoctor() {
-
-	}
-
 	/**
 	 * Search Drug Data
 	 */
-	public void searchDrugData() {
+	public static void searchDrugData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Drug Id : ");
 			String id = sc.nextLine();
@@ -145,16 +144,16 @@ public class Drug {
 	/**
 	 * Delete Drug Data
 	 */
-	public void deleteDrugData() {
+	public static void deleteDrugData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Drug Id");
 			String did = sc.nextLine();
 			int result = st.executeUpdate("delete from drug where d_id='" + did + "';");
-			System.out.println("Delete SuccessFully....");
+			System.out.println("Delete SuccessFully...." + result);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,11 +163,11 @@ public class Drug {
 	/**
 	 * Show All Drug List
 	 */
-	public void listAllDrug() {
+	public static void listAllDrug() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			String sql = "select * from drug";
 			ResultSet rs = st.executeQuery(sql);

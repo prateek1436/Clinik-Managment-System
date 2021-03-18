@@ -20,6 +20,13 @@ import java.sql.*;
 public class LabTest {
 
 	/**
+	 * Make Custructor
+	 */
+	private LabTest() {
+
+	}
+
+	/**
 	 * Show All Operation on Console
 	 */
 	public static void showCRUDDrug() {
@@ -34,9 +41,9 @@ public class LabTest {
 	/**
 	 * Lab Test Panel
 	 */
-	public void labTestPanel() {
+	public static void labTestPanel() {
 		Scanner sc = new Scanner(System.in);
-		back: while (true) {
+		while (true) {
 			System.out.println("Enter Your Choice : ");
 
 			showCRUDDrug();
@@ -58,10 +65,12 @@ public class LabTest {
 				listAllLabTest();
 				break;
 			case "6":
-				break back;
+				labTestPanel();
+				break;
 			default:
 				break;
 			}
+			sc.close();
 		}
 	}
 
@@ -82,22 +91,23 @@ public class LabTest {
 		int rate = sc.nextInt();
 		String ratestring = Integer.toString(rate);
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("1", lbid);
 		map.put("2", pid);
 		map.put("3", testname);
 		map.put("4", ratestring);
+		sc.close();
 		return map;
 	}
 
 	/**
 	 * Insert Lab Test Data
 	 */
-	public void insertLabTestData() {
+	public static void insertLabTestData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			String sql = ("insert into lab_test values(?,?,?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			Map<String, String> map = inputLabTestData();
@@ -109,7 +119,7 @@ public class LabTest {
 			stmt.setDate(4, date);
 			stmt.setString(5, map.get("4"));
 			int i = stmt.executeUpdate();
-			System.out.println("Insert successfully!!!!!!");
+			System.out.println("Insert successfully!!!!!!" + i);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,19 +129,19 @@ public class LabTest {
 	/**
 	 * Update Lab Test Data
 	 */
-	public void updateLabTestDoctor() {
+	public static void updateLabTestDoctor() {
 		System.out.println("Not Complete");
 	}
 
 	/**
 	 * Search Lab Test Data By Id
 	 */
-	public void searchLabTestData() {
+	public static void searchLabTestData() {
 		Scanner sc = new Scanner(System.in);
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Lab Test Id");
 			String id = sc.nextLine();
@@ -153,6 +163,7 @@ public class LabTest {
 			labTestPanel();
 			st.close();
 			con.close();
+			sc.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -161,18 +172,20 @@ public class LabTest {
 	/**
 	 * Delete Lab Test Data By Id
 	 */
-	public void deleteLabTestData() {
+	public static void deleteLabTestData() {
 		Scanner sc = new Scanner(System.in);
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Lab Test Id");
 			String did = sc.nextLine();
 			int result = st.executeUpdate("delete from lab_test where plab_id ='" + did + "';");
-			System.out.println("Delete SuccessFully....");
+			System.out.println("Delete SuccessFully...." + result);
+			st.close();
 			con.close();
+			sc.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -181,11 +194,11 @@ public class LabTest {
 	/**
 	 * List And Show All Lab Test Data
 	 */
-	public void listAllLabTest() {
+	public static void listAllLabTest() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			String sql = "select * from lab_test";
 			ResultSet rs = st.executeQuery(sql);

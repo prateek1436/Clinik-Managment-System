@@ -1,7 +1,6 @@
 package com.divergent.clinicmanagmentsystem;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +12,10 @@ import java.util.Scanner;
 public class CurdDoctor {
 
 	static Scanner sc = new Scanner(System.in);
+
+	private CurdDoctor() {
+
+	}
 
 	/**
 	 * It show Option on console
@@ -30,7 +33,7 @@ public class CurdDoctor {
 	 * It Select Option on Console Panel to choice on It.
 	 */
 	public static void docterPanel() {
-		back: while (true) {
+		while (true) {
 			System.out.println("Enter Your Choice : ");
 
 			showCRUDDoctor();
@@ -52,7 +55,8 @@ public class CurdDoctor {
 				listAllDoctor();
 				break;
 			case "6":
-				break back;
+				docterPanel();
+				break;
 			default:
 				break;
 			}
@@ -66,25 +70,25 @@ public class CurdDoctor {
 	 */
 	public static Map<String, String> inputDoctorData() {
 		System.out.println("Enter Doctor_Id");
-		String d_id = sc.nextLine();
+		String did = sc.nextLine();
 		System.out.println("Enter Doctor Name");
-		String d_name = sc.nextLine();
+		String dname = sc.nextLine();
 		System.out.println("Enter Speciaslity");
-		String d_specia = sc.nextLine();
+		String dspecia = sc.nextLine();
 		System.out.println("Enter ContactNo");
-		String d_contact = sc.nextLine();
+		String dcontact = sc.nextLine();
 		System.out.println("Enter Fee");
-		String d_fee = sc.nextLine();
+		String dfee = sc.nextLine();
 		System.out.println("Enter Degree");
-		String d_degree = sc.nextLine();
+		String ddegree = sc.nextLine();
 
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("1", d_id);
-		map.put("2", d_name);
-		map.put("3", d_specia);
-		map.put("4", d_contact);
-		map.put("5", d_fee);
-		map.put("6", d_degree);
+		Map<String, String> map = new HashMap<>();
+		map.put("1", did);
+		map.put("2", dname);
+		map.put("3", dspecia);
+		map.put("4", dcontact);
+		map.put("5", dfee);
+		map.put("6", ddegree);
 		return map;
 	}
 
@@ -94,8 +98,8 @@ public class CurdDoctor {
 	public static void insertDoctorData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			String sql = ("insert into doctor values(?,?,?,?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			Map<String, String> map = inputDoctorData();
@@ -106,7 +110,7 @@ public class CurdDoctor {
 			stmt.setString(5, map.get("5"));
 			stmt.setString(6, map.get("6"));
 			int i = stmt.executeUpdate();
-			System.out.println("Insert successfully!!!!!!");
+			System.out.println("Insert successfully!!!!!!" + i);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,9 +124,7 @@ public class CurdDoctor {
 
 		System.out.println("\n----Update Doctor----");
 		System.out.print("\nEnter Doctor Id : ");
-
-		Scanner sc = new Scanner(System.in);
-
+		sc = new Scanner(System.in);
 		String did = sc.nextLine();
 
 		Map<String, String> map = searchDoctorId(did);
@@ -149,9 +151,9 @@ public class CurdDoctor {
 			map.put("dfee", sc.nextLine());
 			System.out.println("\nEnter New Doctor Degree : ");
 			map.put("ddegree", sc.nextLine());
-
 			updateDoctor(map);
 		}
+		sc.close();
 	}
 
 	/**
@@ -160,13 +162,11 @@ public class CurdDoctor {
 	 * @param map
 	 */
 	public static void updateDoctor(Map<String, String> map) {
-
 		Connection con = null;
 		Statement st = null;
-
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			st = con.createStatement();
 			st.executeUpdate("update doctor set dname = '" + map.get("dname") + "', Speciality = '"
 					+ map.get("speciality") + "',contact_no = '" + map.get("dcontact") + "',fee = '" + map.get("dfee")
@@ -174,7 +174,6 @@ public class CurdDoctor {
 			System.out.println("Data Updated Successfully...");
 			st.close();
 			con.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -186,18 +185,16 @@ public class CurdDoctor {
 	 * @param did
 	 * @return
 	 */
-	public static Map searchDoctorId(String did) {
+	public static Map<String, String> searchDoctorId(String did) {
 
 		Connection con = null;
 		Statement st = null;
 		Map<String, String> map = new HashMap<>();
 		try {
-
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from doctor where d_id = '" + did + "'");
-
 			if (rs.next()) {
 				map.put("did", rs.getString(1));
 				map.put("dname", rs.getString(2));
@@ -209,7 +206,6 @@ public class CurdDoctor {
 			} else {
 				return map;
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,8 +220,8 @@ public class CurdDoctor {
 	public static void searchDoctorData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Doctor Id : ");
 			String id = sc.nextLine();
@@ -259,13 +255,13 @@ public class CurdDoctor {
 	public static void deleteDoctorData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Doctor Id");
 			String did = sc.nextLine();
 			int result = st.executeUpdate("delete from doctor where d_id='" + did + "';");
-			System.out.println("Delete SuccessFully....");
+			System.out.println("Delete SuccessFully...." + result);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -278,8 +274,8 @@ public class CurdDoctor {
 	public static void listAllDoctor() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			String sql = "select * from doctor";
 			ResultSet rs = st.executeQuery(sql);

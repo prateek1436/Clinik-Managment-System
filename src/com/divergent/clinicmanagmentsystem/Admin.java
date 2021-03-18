@@ -1,9 +1,9 @@
 package com.divergent.clinicmanagmentsystem;
 
-import java.io.Console;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
@@ -14,21 +14,15 @@ import java.util.Scanner;
  *
  */
 public class Admin {
-	Patient patient = new Patient();
-	Drug drug = new Drug();
-	LabTest labtest = new LabTest();
-	CurdDoctor doctor = new CurdDoctor();
-	Appoinment appoin = new Appoinment();
 	Scanner sc = new Scanner(System.in);
 
 	/**
 	 * Admin Login
 	 * 
 	 * @return
+	 * @throws SQLException
 	 */
-	public boolean adminLogin() {
-
-		Console cons = System.console();
+	public boolean adminLogin() throws SQLException {
 		System.out.println("\n-----Admin Login------");
 		System.out.print("\nEnter Username: ");
 		String username = sc.nextLine();
@@ -36,10 +30,11 @@ public class Admin {
 		String password = sc.nextLine();
 
 		Connection con = null;
+		Statement st = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
-			Statement st = con.createStatement();
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
+			st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from administration where a_username = '" + username
 					+ "' && a_password = '" + password + "'");
 			if (rs.next()) {
@@ -52,24 +47,22 @@ public class Admin {
 		} catch (Exception e) {
 			System.out.println("error with database");
 		} finally {
-			try {
-				con.close();
-			} catch (Exception e) {
-				System.out.println("Connection problem");
-			}
+			st.close();
+			con.close();
+			System.out.println("Connection problem");
 		}
 		return false;
 	}
 
 	public void printAdminOptions() {
-		 while (true) {
+		while (true) {
 			executedMethod();
 		}
 	}
 
 	private void executedMethod() {
 		System.out.println("\n----Admin Panel-----");
-		System.out.println("1.	Patient");
+		System.out.println("1. Patient");
 		System.out.println("2. 	Doctor");
 		System.out.println("3. 	Drug");
 		System.out.println("4.	Lab Test");
@@ -81,23 +74,27 @@ public class Admin {
 
 		switch (input) {
 		case 1:
-			patient.patientPanel();
+			Patient.patientPanel();
 			break;
 		case 2:
-			doctor.docterPanel();
+			CurdDoctor.docterPanel();
 			break;
 		case 3:
-			drug.drugPanel();
+			Drug.drugPanel();
 			break;
 		case 4:
-			labtest.labTestPanel();
+			LabTest.labTestPanel();
 			break;
 		case 5:
-			appoin.appoinmentPanel();
+			Appoinment.appoinmentPanel();
 			break;
 		case 6:
 			System.out.println("Logout Successfully");
-			ClinicManagmentSystem.startAgain();
+			try {
+				ClinicManagmentSystem.startAgain();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			break;
 		default:
 			System.out.println("Back");
