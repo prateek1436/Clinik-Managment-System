@@ -15,15 +15,11 @@ import java.util.Scanner;
  */
 public class Doctor {
 
-	Scanner sc = new Scanner(System.in);
-	Patient patient = new Patient();
-	Appoinment appoin = new Appoinment();
-	PrescriptionAndNotes pandn = new PrescriptionAndNotes();
-
 	/**
 	 * Get Doctor Data
 	 */
-	public void printDoctorOptions() {
+	public static void printDoctorOptions() {
+		Scanner sc = new Scanner(System.in);
 		while (true) {
 			System.out.println("\nDoctor Panel");
 			System.out.println("1. List of patient");
@@ -38,27 +34,34 @@ public class Doctor {
 
 			switch (input) {
 			case 1:
-				patient.listAllPatientData();
+				Patient.listAllPatientData();
 				break;
 			case 2:
-				pandn.prescriptionPatient();
+				PrescriptionAndNotes.prescriptionPatient();
 				break;
 			case 3:
-				appoin.showAllAppoinment();
+				Appoinment.showAllAppoinment();
 				break;
 			case 4:
-				pandn.historyAndPresciption();
+				PrescriptionAndNotes.historyAndPresciption();
 				break;
 			case 5:
-				patient.generateInvoice();
+				Patient.generateInvoice();
+				break;
 			case 6:
 				System.out.println("Logout Successfully");
-				ClinicManagmentSystem.startAgain();
+				try {
+					ClinicManagmentSystem.startAgain();
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
 				break;
 			default:
 				System.out.println("Choice Right Option");
 				break;
 			}
+			sc.close();
 		}
 	}
 
@@ -79,7 +82,7 @@ public class Doctor {
 		Statement st = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from administration where a_username = '" + username
 					+ "' && a_password = '" + password + "'");
@@ -94,6 +97,7 @@ public class Doctor {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		sc.close();
 		return false;
 	}
 

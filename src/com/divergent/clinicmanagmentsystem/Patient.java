@@ -15,7 +15,10 @@ public class Patient {
 
 	static Scanner sc = new Scanner(System.in);
 	static Connection con;
-	static Doctor doctor = new Doctor();
+
+	private Patient() {
+
+	}
 
 	/**
 	 * Show All OPtion Of Admin to CRUD Operation
@@ -33,8 +36,8 @@ public class Patient {
 	 * Select Option by this method
 	 */
 	public static void patientPanel() {
-		back: while (true) {
-			Scanner sc = new Scanner(System.in);
+		while (true) {
+			sc = new Scanner(System.in);
 			showAll();
 			String input = sc.nextLine();
 			switch (input) {
@@ -54,7 +57,7 @@ public class Patient {
 				listAllPatientData();
 				break;
 			case "6":
-				break back;
+				break;
 			default:
 				break;
 			}
@@ -69,25 +72,25 @@ public class Patient {
 	public static Map<String, String> inputPatientData() {
 		System.out.println(
 				"Enter Patient_ID,Name,Address,Age,Weight,Gender,Contact_No,ACurrentDate,AppoimentDate,Problem");
-		String p_id = sc.nextLine();
-		String p_name = sc.nextLine();
-		String p_address = sc.nextLine();
-		String p_age = sc.nextLine();
-		String p_weight = sc.nextLine();
-		String p_gender = sc.nextLine();
-		String p_contactno = sc.nextLine();
-		String p_appoimentdate = sc.nextLine();
-		String p_problem = sc.nextLine();
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("1", p_id);
-		map.put("2", p_name);
-		map.put("3", p_address);
-		map.put("4", p_age);
-		map.put("5", p_weight);
-		map.put("6", p_gender);
-		map.put("7", p_contactno);
-		map.put("9", p_appoimentdate);
-		map.put("10", p_problem);
+		String pid = sc.nextLine();
+		String pname = sc.nextLine();
+		String paddress = sc.nextLine();
+		String page = sc.nextLine();
+		String pweight = sc.nextLine();
+		String pgender = sc.nextLine();
+		String pcontactno = sc.nextLine();
+		String pappoimentdate = sc.nextLine();
+		String pproblem = sc.nextLine();
+		Map<String, String> map = new HashMap<>();
+		map.put("1", pid);
+		map.put("2", pname);
+		map.put("3", paddress);
+		map.put("4", page);
+		map.put("5", pweight);
+		map.put("6", pgender);
+		map.put("7", pcontactno);
+		map.put("9", pappoimentdate);
+		map.put("10", pproblem);
 
 		return map;
 	}
@@ -98,7 +101,7 @@ public class Patient {
 	public static void insertPatientData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			String sql = ("insert into patient values(?,?,?,?,?,?,?,?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			long millis = System.currentTimeMillis();
@@ -115,7 +118,7 @@ public class Patient {
 			stmt.setString(9, map.get("9"));
 			stmt.setString(10, map.get("10"));
 			int i = stmt.executeUpdate();
-			System.out.println("Insert successfully!!!!!!");
+			System.out.println("Insert successfully!!!!!!" + i);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,8 +131,8 @@ public class Patient {
 	private static void updatePatientData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			int pid = Integer.parseInt(sc.nextLine());
 			String pproblem = sc.nextLine();
@@ -148,7 +151,7 @@ public class Patient {
 	private static void searchPatientData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Patient Id : ");
 			String id = sc.nextLine();
@@ -188,12 +191,12 @@ public class Patient {
 	private static void deletePatientData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user, ClinicDatabase.password);
+			con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME, ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("Enter Patient Id : ");
 			String pid = sc.nextLine();
 			int result = st.executeUpdate("delete from patient where p_id='" + pid + "';");
-			System.out.println("Delete SuccessFully....");
+			System.out.println("Delete SuccessFully...." + result);
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -206,8 +209,8 @@ public class Patient {
 	public static void listAllPatientData() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			String sql = "select * from patient";
 			ResultSet rs = st.executeQuery(sql);
@@ -247,8 +250,8 @@ public class Patient {
 	public static void generateInvoice() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(ClinicDatabase.url, ClinicDatabase.user,
-					ClinicDatabase.password);
+			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
+					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
 			System.out.println("\nEnter Patient Id");
 			String id = sc.nextLine();
@@ -259,7 +262,7 @@ public class Patient {
 
 			if (!rs.next()) {
 				System.out.println("Record Is not Found!\n");
-				doctor.printDoctorOptions();
+				Doctor.printDoctorOptions();
 			} else {
 				System.out.println(
 						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Invoice*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
@@ -275,7 +278,7 @@ public class Patient {
 				System.out.println(
 						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
-			doctor.printDoctorOptions();
+			Doctor.printDoctorOptions();
 			st.close();
 			con.close();
 		} catch (Exception e) {
