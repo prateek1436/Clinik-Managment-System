@@ -55,7 +55,7 @@ public class CurdDoctor {
 				listAllDoctor();
 				break;
 			case "6":
-				docterPanel();
+				Admin.executedMethod();
 				break;
 			default:
 				break;
@@ -279,12 +279,9 @@ public class CurdDoctor {
 			Statement st = con.createStatement();
 			String sql = "select * from doctor";
 			ResultSet rs = st.executeQuery(sql);
-			if (!rs.next()) {
-				System.out.println("No Record Found!\n");
-				docterPanel();
-			} else {
-				System.out.println(
-						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Docter Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Docter Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 				String did = rs.getString(1);
 				String dname = rs.getString(2);
 				String specia = rs.getString(3);

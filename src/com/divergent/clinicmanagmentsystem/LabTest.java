@@ -65,7 +65,7 @@ public class LabTest {
 				listAllLabTest();
 				break;
 			case "6":
-				labTestPanel();
+				Admin.executedMethod();
 				break;
 			default:
 				break;
@@ -202,19 +202,16 @@ public class LabTest {
 			Statement st = con.createStatement();
 			String sql = "select * from lab_test";
 			ResultSet rs = st.executeQuery(sql);
-			if (!rs.next()) {
-				System.out.println("No Record Is Found!\n");
-				labTestPanel();
-			} else {
-				System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Lab Test Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 				String ltid = rs.getString(1);
 				String pid = rs.getString(2);
 				String testname = rs.getString(3);
 				Date date = rs.getDate(4);
 				int rate = rs.getInt(5);
 				System.out.printf("%5s  %5s  %25s  %12s  %10s\n", ltid, pid, testname, date, rate);
-				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			labTestPanel();
 			st.close();
 			con.close();

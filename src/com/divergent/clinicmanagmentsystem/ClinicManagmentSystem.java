@@ -71,7 +71,7 @@ public class ClinicManagmentSystem {
 				break;
 
 			case "3":
-				startAgain();
+				System.exit(0);
 				break;
 
 			default:

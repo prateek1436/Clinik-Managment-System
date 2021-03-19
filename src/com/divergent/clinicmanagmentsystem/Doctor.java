@@ -27,7 +27,7 @@ public class Doctor {
 			System.out.println("3. See booked appointments for him");
 			System.out.println("4. Check patient history and his prescription");
 			System.out.println("5. Generate Invoice");
-			System.out.println("5. Logout");
+			System.out.println("6. Logout");
 			System.out.print("Enter Your Choice: ");
 
 			int input = sc.nextInt();
@@ -61,7 +61,6 @@ public class Doctor {
 				System.out.println("Choice Right Option");
 				break;
 			}
-			sc.close();
 		}
 	}
 

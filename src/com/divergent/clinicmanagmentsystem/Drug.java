@@ -59,7 +59,7 @@ public class Drug {
 				listAllDrug();
 				break;
 			case "6":
-				drugPanel();
+				Admin.executedMethod();
 				break;
 			default:
 				break;
@@ -171,19 +171,17 @@ public class Drug {
 			Statement st = con.createStatement();
 			String sql = "select * from drug";
 			ResultSet rs = st.executeQuery(sql);
-			if (!rs.next()) {
-				System.out.println("No record Is Found!\n");
-				drugPanel();
-			} else {
-				System.out.println(
-						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Drug Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Drug Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 				String did = rs.getString(1);
 				String dname = rs.getString(2);
 				String rate = rs.getString(3);
 				System.out.printf("%5s  %20s  %25s  \n", did, dname, rate);
-				System.out.println(
-						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
+			System.out.println(
+					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+
 			drugPanel();
 			st.close();
 			con.close();

@@ -57,6 +57,7 @@ public class Patient {
 				listAllPatientData();
 				break;
 			case "6":
+				Admin.executedMethod();
 				break;
 			default:
 				break;
@@ -214,13 +215,10 @@ public class Patient {
 			Statement st = con.createStatement();
 			String sql = "select * from patient";
 			ResultSet rs = st.executeQuery(sql);
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 
-			if (!rs.next()) {
-				System.out.println("No Record is Found!\n");
-				patientPanel();
-			} else {
-				System.out.println(
-						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
 				String paddress = rs.getString(3);
@@ -233,9 +231,10 @@ public class Patient {
 				String pproblem = rs.getString(10);
 				System.out.printf("%5s  %15s  %15s  %3s  %4s  %6s  %12s  %12s  %12s  %20s\n", pid, pname, paddress,
 						page, pweight, pgender, pcontactno, pcurrentdate, pappoinment, pproblem);
-				System.out.println(
-						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+
 			}
+			System.out.println(
+					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 

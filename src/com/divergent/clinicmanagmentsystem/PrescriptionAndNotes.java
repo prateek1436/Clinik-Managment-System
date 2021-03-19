@@ -1,6 +1,7 @@
 package com.divergent.clinicmanagmentsystem;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,11 +18,13 @@ import java.util.Scanner;
  */
 public class PrescriptionAndNotes {
 
+	static Scanner sc = new Scanner(System.in);
+
 	/**
 	 * Make Custructor
 	 */
 	private PrescriptionAndNotes() {
-		super();
+
 	}
 
 	/**
@@ -29,49 +32,46 @@ public class PrescriptionAndNotes {
 	 * 
 	 * @return
 	 */
-	private static Map<String, String> inputPrescriptionData() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println(Messages.getString("PrescriptionAndNotes.0"));
+	public static Map<String, String> inputPrescriptionData() {
+
+		System.out.println("Enter Prescription Id");
 		String prescriId = sc.nextLine();
-		System.out.println(Messages.getString("PrescriptionAndNotes.1"));
+		System.out.println("Enter Patient Id");
 		String patientId = sc.nextLine();
-		System.out.println(Messages.getString("PrescriptionAndNotes.2"));
+		System.out.println("Enter Prescription");
 		String prescription = sc.nextLine();
-		System.out.println(Messages.getString("PrescriptionAndNotes.3"));
+		System.out.println("Enter Notes");
 		String note = sc.nextLine();
-		System.out.println(Messages.getString("PrescriptionAndNotes.4"));
+		System.out.println("Enter doctor id");
 		String doctorid = sc.nextLine();
 
 		Map<String, String> map = new HashMap<>();
-		map.put(Messages.getString("PrescriptionAndNotes.5"), prescriId);
-		map.put(Messages.getString("PrescriptionAndNotes.6"), patientId);
-		map.put(Messages.getString("PrescriptionAndNotes.7"), prescription);
-		map.put(Messages.getString("PrescriptionAndNotes.8"), note);
-		map.put(Messages.getString("PrescriptionAndNotes.9"), doctorid);
-		sc.close();
+		map.put("1", prescriId);
+		map.put("2", patientId);
+		map.put("3", prescription);
+		map.put("4", note);
+		map.put("5", doctorid);
 		return map;
 	}
 
 	/**
 	 * Patient Prescription
 	 */
-	static void prescriptionPatient() {
+	public static void prescriptionPatient() {
 		try {
-			Class.forName(Messages.getString("PrescriptionAndNotes.10"));
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
 					ClinicDatabase.PASSWORD);
-			String sql = (Messages.getString("PrescriptionAndNotes.11"));
+			String sql = ("insert into prescription values(?,?,?,?,?)");
 			PreparedStatement stmt = con.prepareStatement(sql);
 			Map<String, String> map = inputPrescriptionData();
-			stmt.setString(1, map.get(Messages.getString("PrescriptionAndNotes.12")));
-			stmt.setString(2, map.get(Messages.getString("PrescriptionAndNotes.13")));
-			stmt.setString(3, map.get(Messages.getString("PrescriptionAndNotes.14")));
-			stmt.setString(4, map.get(Messages.getString("PrescriptionAndNotes.15")));
-			stmt.setString(5, map.get(Messages.getString("PrescriptionAndNotes.16")));
+			stmt.setString(1, map.get("1"));
+			stmt.setString(2, map.get("2"));
+			stmt.setString(3, map.get("3"));
+			stmt.setString(4, map.get("4"));
+			stmt.setString(5, map.get("5"));
 			int i = stmt.executeUpdate();
-			System.out.println(Messages.getString("PrescriptionAndNotes.17"));
-			System.out.println(i);
-			stmt.close();
+			System.out.println("Insert successfully!!!!!!");
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,37 +82,39 @@ public class PrescriptionAndNotes {
 	/**
 	 * History and Prescription of all Patient
 	 */
-	static void historyAndPresciption() {
+	public static void historyAndPresciption() {
 		try {
-			Class.forName(Messages.getString("PrescriptionAndNotes.18"));
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(ClinicDatabase.URL, ClinicDatabase.USERNAME,
 					ClinicDatabase.PASSWORD);
 			Statement st = con.createStatement();
-			String sql = Messages.getString("PrescriptionAndNotes.19") + Messages.getString("PrescriptionAndNotes.20")
-					+ Messages.getString("PrescriptionAndNotes.21") + Messages.getString("PrescriptionAndNotes.22")
-					+ Messages.getString("PrescriptionAndNotes.23") + Messages.getString("PrescriptionAndNotes.24");
+			String sql = "select patient.p_id,patient.p_name,patient.age,patient.gender,appoinment.d_id,appoinment.d_name,\r\n"
+					+ "appoinment.appoinment_id,appoinment.problem,appoinment.appoinment_date,\r\n"
+					+ "prescription.dprescription,prescription.dnotes\r\n"
+					+ "from patient inner join appoinment on patient.p_id =  appoinment.p_id   \r\n"
+					+ "inner join prescription on patient.p_id = prescription.p_id\r\n"
+					+ "order by appoinment.appoinment_date desc;";
 			ResultSet rs = st.executeQuery(sql);
-			if (!rs.next()) {
-				System.out.println(Messages.getString("PrescriptionAndNotes.25"));
-				Doctor.printDoctorOptions();
-			} else {
-				System.out.println(Messages.getString("PrescriptionAndNotes.26"));
-				System.out.println(Messages.getString("PrescriptionAndNotes.27"));
+			System.out.println("\n*-*-*-*-*-*-*-*-*-* History Of Patient *-*-*-*-*-*-*-*-*-*-*-*-*");
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 				String pid = rs.getString(1);
 				String pname = rs.getString(2);
-				String pgender = rs.getString(3);
-				String page = rs.getString(4);
+				String page = rs.getString(3);
+				String pgender = rs.getString(4);
 				String doctorId = rs.getString(5);
 				String doctorname = rs.getString(6);
 				String appoinId = rs.getString(7);
 				String pproblem = rs.getString(8);
 				String appoindate = rs.getString(9);
-				String prescri = rs.getString(10);
+				String prescription = rs.getString(10);
 				String note = rs.getString(11);
-				System.out.printf(Messages.getString("PrescriptionAndNotes.28"), pid, pname, pgender, page, doctorId,
-						doctorname, appoinId, pproblem, appoindate, prescri, note);
-				System.out.println(Messages.getString("PrescriptionAndNotes.29"));
+				System.out.printf("%5s  %20s  %5s  %7s  %5s  %20s  %3s  %15s  %15s  %25s  %25s\n", pid, pname, page,
+						pgender, doctorId, doctorname, appoinId, pproblem, appoindate, prescription, note);
 			}
+			System.out.println(
+					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 

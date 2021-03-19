@@ -60,9 +60,10 @@ public class Admin {
 		}
 	}
 
-	private void executedMethod() {
+	static void executedMethod() {
+		Scanner sc = new Scanner(System.in);
 		System.out.println("\n----Admin Panel-----");
-		System.out.println("1. Patient");
+		System.out.println("1.  Patient");
 		System.out.println("2. 	Doctor");
 		System.out.println("3. 	Drug");
 		System.out.println("4.	Lab Test");

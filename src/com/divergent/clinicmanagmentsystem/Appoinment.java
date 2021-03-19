@@ -55,7 +55,6 @@ public class Appoinment {
 		map.put("5", appoindate);
 		map.put("6", doctorid);
 		map.put("7", patientid);
-		sc.close();
 		return map;
 	}
 
@@ -98,12 +97,9 @@ public class Appoinment {
 			Statement st = con.createStatement();
 			String sql = "select * from appoinment";
 			ResultSet rs = st.executeQuery(sql);
-			if (!rs.next()) {
-				System.out.println("No Record Is Found!\n");
-				Doctor.printDoctorOptions();
-			} else {
-				System.out.println(
-						"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Appointmenr Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			System.out.println(
+					"\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*Appointmenr Patient Data*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			while (rs.next()) {
 				int appoinid = rs.getInt(1);
 				String pname = rs.getString(2);
 				String dname = rs.getString(3);
@@ -114,10 +110,9 @@ public class Appoinment {
 				String pid = rs.getString(8);
 				System.out.printf("%6s  %15s  %15s  %20s  %12s  %12s  %5s  %5s\n", appoinid, pname, dname, problem,
 						appinDate, currentDate, did, pid);
-
-				System.out.println(
-						"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			}
+			System.out.println(
+					"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 			st.close();
 			con.close();
 
